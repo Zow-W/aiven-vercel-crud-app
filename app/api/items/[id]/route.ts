@@ -6,7 +6,6 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
 
-// Verifikasi token
 function verifyToken(request: Request) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -20,8 +19,7 @@ function verifyToken(request: Request) {
     }
 }
 
-// GET
-export async function GET(request: Request, context: { params: { id: string } }) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
     try {
         const user = verifyToken(request);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -43,8 +41,7 @@ export async function GET(request: Request, context: { params: { id: string } })
     }
 }
 
-// PUT
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
     try {
         const user = verifyToken(request);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -71,8 +68,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
     }
 }
 
-// DELETE
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
     try {
         const user = verifyToken(request);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
